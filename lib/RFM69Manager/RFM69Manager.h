@@ -38,6 +38,26 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RADIO_DEBUG         1
 #define SEND_PACKET_ID      1
 
+#define RF69_SPI_CS             SS // SS is the SPI slave select pin, for instance D10 on ATmega328
+
+// INT0 on AVRs should be connected to RFM69's DIO0 (ex on ATmega328 it's D2, on ATmega644/1284 it's D2)
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega88) || defined(__AVR_ATmega8__) || defined(__AVR_ATmega88__)
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          0
+#elif defined(__AVR_ATmega644P__) || defined(__AVR_ATmega1284P__)
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          2
+#elif defined(__AVR_ATmega32U4__)
+  #define RF69_IRQ_PIN          3
+  #define RF69_IRQ_NUM          0
+#elif defined(__arm__)//Use pin 10 or any pin you want
+  #define RF69_IRQ_PIN          10
+  #define RF69_IRQ_NUM          10
+#else
+  #define RF69_IRQ_PIN          2
+  #define RF69_IRQ_NUM          0
+#endif
+
 typedef struct {
     unsigned long messageID;
     unsigned char packetID;
